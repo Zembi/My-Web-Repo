@@ -1,0 +1,481 @@
+:root {
+  /* CONSOLE VARS */
+  --consoleChangeHeight: null;
+  --flexDirect: row;
+  --consoleAlign: null;
+}
+
+*::after, *::before {
+   border: none;
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+   width: 4px;
+ }
+ 
+ /* Track */
+ ::-webkit-scrollbar-track {
+   background: rgb(0, 0, 0, 0.4); 
+ }
+  
+ /* Handle */
+ ::-webkit-scrollbar-thumb {
+   background: white; 
+ }
+ 
+ /* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+   background: rgb(255, 199, 199); 
+ }
+
+body {
+   width: 100%; height: 100%;
+   background: white;
+   color: rgb(0, 39, 167);
+   overflow: hidden;
+   margin: 0;
+}
+
+#splitScreen {
+   position: relative;
+}
+
+/* MENU OF SCREEN */
+#menu {
+   position: fixed;
+   width: 15%;
+   min-width: 150px;
+   background: #00000080;
+   color: black;
+   font-family: Arial, Helvetica, sans-serif;
+   border-radius: 0 0 5px 5px;
+   border: 2px solid black;
+   border-top: 0;
+   top: 0;
+   box-shadow: 0 0 2px black;
+   margin: 0% 10px;
+   z-index: 1;
+   transition: height 0.6s;
+}
+.openCoreMenu {
+   height: 95%;
+   overflow: auto;
+}
+.closedCoreMenu {
+   height: 34px;
+   overflow: hidden;
+}
+
+#menuTitle {
+   display: flex;
+   background: transparent;
+   color: white;
+}
+   #menuTitle h2 {
+      flex: 1;
+      font-weight: bold;
+      text-align: center;
+      margin: 6px auto 2px auto;
+   }
+
+   #menuTitle button {
+      width: 1.5rem; height: 1.5rem;
+      align-self: center;
+      background-color: transparent;
+      background-image: url(Assets/whiteArrow.png);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-origin: content-box;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      padding: 1px 0 0 0;
+      margin: 0 2px 0 0;
+      transition: transform 0.2s;
+   }
+   #menuTitle button:hover {
+      border: 1px solid black;
+      box-shadow: 0 0 0.2rem black;
+   }
+   .openCoreMenuBtn {
+      transform: rotate(-180deg);
+   }
+   .closedCoreMenuBtn {
+      transform: rotate(0deg);
+   }
+
+#menuContent {
+   position: relative;
+   padding: 0.2rem 0;
+   margin-top: 5px;
+   transition: height 0.3s;
+}
+.openCoreMenuContent {
+   border-top: 2px solid lightgrey;
+}
+.closedCoreMenuContent {
+   border-top: 0 solid transparent;
+}
+.menuElement {
+   background: transparent;
+   margin-top: 1px;
+}
+.menuElement:first-child {
+   margin: 0;
+}
+
+
+/* MENU'S ELEMENTS */
+.menuItem {
+   display: flex;
+   flex-direction: column;
+   background: transparent;
+   margin: 0;  
+}
+.menuHeaderBtn {
+   background: grey;
+   border: none;
+   border-top: 2px solid black;
+   border-bottom: 2px solid black;
+   cursor: pointer;
+   padding: 4px 0;
+   margin: 0 0;
+}
+.menuHeaderBtn:hover {
+   color: bisque;
+}
+.menuHeaderBtn:active {
+   color: darkgrey;
+}
+.menuHeader {
+   font-size: 0.9rem;
+   font-weight: bold;
+   word-wrap: break-word;
+   text-align: center;
+   padding: 0 1em;
+   margin: 0;
+}
+.menuHeader sup {
+  color: rgb(76, 0, 255);
+}
+
+.menuSpecificContent {
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+}
+.openSpecificContent {
+   height: auto;
+}
+.closedSpecificContent {
+   height: 0;
+}
+.menuSpecificBtn {
+   background: linear-gradient(90deg, rgb(0, 0, 0, 0.2), transparent);
+   color: lightgrey;
+   border: none;
+   border-bottom: 2px solid black; border-left: 2px solid black;
+   cursor: pointer;
+   box-sizing: border-box;
+   padding: 0.4em 0;
+   margin: 0 1em;
+}
+.menuSpecificBtn:hover {
+   color: bisque;
+}
+.menuSpecificBtn:active {
+   color: darkgray;
+}
+.menuSpecificText {
+   font-size: 0.8rem;
+   font-weight: bold;
+   text-align: center;
+   word-wrap: break-word;
+   padding: 0 1em;
+   margin: 0;
+}
+.menuSpecificText:hover {
+   text-decoration: underline;
+}
+/* END OF MENU */
+
+
+/* CONSOLE */
+#console {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  width: 100%;
+  background: rgb(55, 55, 55, 0.9);
+  bottom: 0;
+  left: 0;
+  overflow: visible;
+  z-index: 2;
+  transition: height 0.3s;
+}
+.openCoreConsole {
+  height: var(--consoleChangeHeight);
+}
+.closedCoreConsole {
+  height: 0;
+}
+
+#consoleTitle {
+  position: relative;
+  background: transparent;
+  padding: 0;
+  margin: auto;
+  margin-top: -32px;
+  z-index: 2;
+}
+#consoleTitle button {
+  background: black;
+  color: white;
+  border-radius: 3px 3px 0 0;
+  border: 1px solid black;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin: 0;
+}
+#consoleTitle button:hover {
+  color: rgb(255, 166, 0);
+}
+#consoleTitle button:active {
+  background: rgb(255, 166, 0);
+  color: black;
+}
+#consoleTitle button h2 {
+  padding: 0;
+  margin: 0;
+}
+
+#consoleContent {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  background: transparent;
+  border: 5px solid rgb(19, 18, 18);
+  border-bottom: none;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 0rem 1rem 3rem 1rem;
+}
+.openCoreConsoleContent {
+
+}
+.closedCoreConsoleContent {
+
+}
+#consoleContent hr {
+  height: 2px;
+  background: rgb(48, 45, 43);
+  border-radius: 0.5em;
+  border-width: 0;
+}
+#consoleContent hr:first-of-type {
+  height: 6px;
+  border-width: 0;
+}
+
+.intiliazedLineOfConsole {
+  width: 100%;
+  text-align: center;
+}
+.newConsoleLine {
+  display: flex;
+  flex-direction: var(--flexDirect);
+  justify-content: var(--consoleAlign);
+  background: transparent;
+  border-radius: 0.2em;
+  padding: 0.1rem;
+  margin: 0.2em 0;
+}
+.newConsoleLine:last-of-type {
+  background: rgb(0, 0, 0, 0.4);
+}
+.newConsoleLine span {
+  text-align: right;
+  margin: 0 0 0 0.4rem;
+}
+.newConsoleLine div {
+  flex: 1;
+  text-align: var(--consoleAlign);
+  word-break: break-all;
+  padding: 0 1rem;
+  margin: 1px 0 0 0;
+}
+.newConsoleLinePar {
+  color: white;
+}
+.newConsoleLine p {
+  color: white;
+  text-align: var(--consoleAlign);
+  word-break: break-all;
+  padding: 0 1rem;
+  margin: 1px 0 0 0;
+}
+#consolePointer {
+  color: rgb(255, 166, 0);
+  font-size: 1rem;
+  font-weight: 900;
+}
+.consoleCountPointer {
+  color: rgb(194, 157, 132);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.consoleLineContent {
+  display: flex;
+  justify-content: var(--consoleAlign);
+}
+.consoleObjectLine {
+  display: flex;
+  flex-direction: column;
+  max-width: 50%;
+  padding: 0 0 !important;
+  margin: 1px 0 0;
+}
+.beforeConsoleObjBtn {
+  display: flex;
+  justify-content: var(--consoleAlign);
+  width: 100%;
+  box-sizing: border-box;
+}
+.consoleObjectLine button {
+  display: flex;
+  align-self: baseline;
+  background-color: transparent;
+  background-origin: content-box;
+  border: none;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0 2px 0 0;
+}
+.consoleObjectLine button:hover p {
+  color: darkgray;
+}
+.consoleObjectLine button:hover img {
+  content: url(Assets/whiteFilledArrow2.png);
+}
+.consoleObjectLineOfObjcBtn {
+  text-decoration: underline 3px rgb(190, 165, 149);
+}
+.consoleObjectLine button img {
+  width: 0.7rem;
+  height: 0.7rem;
+  content: url(Assets/whiteFilledArrow.png);
+  transform: rotate(-90deg);
+  margin: 4px 0 0 0;
+}
+.consoleObjectLineImgToggle {
+  transform: rotate(0) !important;
+}
+.consoleObjectLine button p {
+  flex: none;
+  font-size: 1.2em;
+  padding: 0 0 0 6px;
+}
+.consoleObjectLineP {
+  display: flex;
+  justify-content: var(--consoleAlign);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem 0.1rem;
+  margin: 0 !important;
+}
+.consoleObjectLineAfterP {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-left: 2rem !important;
+}
+.consoleObjectLineAfterP p {
+  align-self: flex-start;
+  padding: 0;
+}
+
+.openedConsoleObjLine {
+  height: auto;
+  overflow: visible;
+}
+.closedConsoleObjLine {
+  height: 0;
+  overflow: hidden;
+  padding: 0rem !important;
+}
+
+/* ERROR MESSAGE LINE STYLING */
+.newConsoleLineError {
+  background: rgb(41, 0, 0);
+  color: rgb(255, 128, 111);
+}
+.errorMainConsoleDestinLine {
+  color: white;
+  font-style: italic;
+  animation: ColorErrorConsole 0.3s infinite alternate-reverse;
+}
+.errorConsoleDestinLine {
+  text-decoration: underline;
+}
+.errorConsolePar {
+  display: block;
+  width: 100%;
+  text-align: var(--consoleAlign) !important;
+  margin: 0 !important;
+}
+
+
+
+#consoleBtns {
+  display: flex;
+  justify-content: right;
+  background: rgb(19, 18, 18);
+}
+.imprtntConsoleBtn {
+  position: relative;
+  background: white;
+  color: black;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin: 4px 10px;
+}
+.imprtntConsoleBtn:hover {
+  background: rgb(255, 166, 0);
+}
+.imprtntConsoleBtn:active {
+  background: darkgrey;
+}
+
+#sizesOfCoreConsoleSlct {
+  padding: 0;
+}
+/* END OF CONSOLE */
+
+
+#THREEJScanvas {
+   position: fixed;
+   display: block;
+   top: 0;
+   right: 0;
+   overflow: hidden;
+}
+
+
+
+/* KEYFRAMES */
+@keyframes ColorErrorConsole {
+  from {
+    color: white;
+  }
+  to {
+    color: rgb(255, 128, 111);
+  }
+}
