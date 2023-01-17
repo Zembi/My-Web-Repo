@@ -48,6 +48,21 @@ function main() {
    consoleObj.AddNewLineToConsole('msg', menuObj);
    console.log(menuObj);
 
+   let now = {
+      no1: 'string',
+      no2: 1,
+      no3: true,
+      no4: null,
+      menuL: menuObj,
+      dom: document.getElementById('consoleContent')
+   }
+   consoleObj.AddNewLineToConsole('msg', now);
+   console.log(now);
+   consoleObj.AddNewLineToConsole('msg', 'now');
+   console.log('now');
+   consoleObj.AddNewLineToConsole('msg', 'fejfhej');
+   consoleObj.AddNewLineToConsole('msg', document.getElementById('THREEJScanvas'));
+
    window.onerror = function (error, url, line) {
       let errData = { error: error, url: url, line: line };
       consoleObj.AddNewLineToConsole('err', errData);
@@ -135,6 +150,7 @@ function main() {
       let menuItem1 = new MenuItem(menuObj);
       menuItem1.AddHeadMenuItem('FirstProjects', '../Js/FirstProjects/');
       menuItem1.AddElemntsToMenuItem('FirstProj', 'FirstProj.js');
+      menuItem1.AddElemntsToMenuItem('SecondProj', 'html.js');
       menuObj.AddMenuItemToMenu(menuItem1);
 
       menuObj.SetAllHeadBtns(menuContent.querySelectorAll('button'));
