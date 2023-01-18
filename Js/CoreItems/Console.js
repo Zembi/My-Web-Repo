@@ -65,7 +65,7 @@ export default class Console {
     }
   }
 
-  AddNewLineToConsole(typeOfMsg, line) {
+  AddNewLineToConsole(typeOfMsg, msgfileLocLine) {
     let consolePointer = document.getElementById('consolePointer');
 
     // IF IT ISN'T FIRST LINE OF CONSOLE
@@ -97,10 +97,13 @@ export default class Console {
       }
 
       let consolePointerLine = `
-            <div class='newConsoleLine' id='lastLineInConsole' style='position: sticky; bottom: -3rem; margin-top: 0.5em;'>
-               <span id='consolePointer'>${this.consoleIndexSymbol}</span>
-               <p></p>
-            </div>`;
+        <div class='newConsoleLine' id='lastLineInConsole'>
+          <hr>
+          <div class='lastLineInConsole' style='position: sticky; bottom: -3rem; margin-top: 0.5em;'>
+            <span id='consolePointer'>${this.consoleIndexSymbol}</span>
+            <span id='consolePointerPar'></span>
+          </div>
+        </div>`;
 
       let importantLine = null;
       if (typeOfMsg === 'msg') {
@@ -119,18 +122,18 @@ export default class Console {
         parentOfObj.classList.add('firstObjOfThisLine');
 
         let consoleObjIdElmnts = { mainC: this.counter, secondaryC: 0 };
-        const consoleObj = new ConsoleLine(parentOfObj, line, consoleObjIdElmnts, this);
+        const consoleObj = new ConsoleLine(parentOfObj, msgfileLocLine, consoleObjIdElmnts, this);
         consoleObj.start();
       }
       else {
         // IF ERROR
-        importantLine = this.ErrorLineOfConsole(line);
+        importantLine = this.ErrorLineOfConsole(msgfileLocLine);
 
         this.consoleContentElmnt.innerHTML += `
             <hr>
-            <div class='newConsoleLine newConsoleLineError'>
+            <div class='newConsoleLine newConsoleLineWrapError'>
                <span class='consoleCountPointer'>${finalCountForm}</span>
-               <div class='consoleLineContent newConsoleLineError'>${importantLine}</div>
+               <div class='newConsoleLineError'>${importantLine}</div>
             </div>
             ${consolePointerLine}
             `;
@@ -150,12 +153,10 @@ export default class Console {
     let finalLinkDestination = linkDestinations[linkDestinations.length - 1] + ' : ';
 
     errResultForm = `
-         <span class='errorMainConsoleDestinLine'>Error =></span><span class='errorConsoleDestinLine'>${finalLinkDestination}${err.line}
-         </span>
-         <span class='errorConsolePar'>
-           ${err.error}
-         </span>
-      `;
+      <span class='errorConsoleMainAndDestinLine'>
+        <span class='errorMainConsoleDestinLine'>Error: </span><span class='errorConsoleDestinLine'>${finalLinkDestination}${err.line}</span>
+      </span>
+      <span class='errorConsolePar'>${err.error}</span>`;
 
     return errResultForm;
   }
@@ -250,7 +251,9 @@ export default class Console {
 class ConsoleLine {
   constructor(parentOfObj, obj, thisIdElmtns, consoleObj) {
     this.parentOfObj = parentOfObj;
-    this.obj = obj;
+    this.obj = obj.message;
+    this.fileLoc = obj.file;
+    this.lineNum = obj.line;
     this.thisIdElmtns = thisIdElmtns;
     this.consoleObj = consoleObj;
 
@@ -262,6 +265,10 @@ class ConsoleLine {
   }
 
   start() {
+    if (this.fileLoc != null && this.lineNum != null) {
+      this.fileLocAndLineToShowIfNeeded();
+    }
+
     if (typeof this.obj === 'object' && this.obj !== null) {
       if (this.isNode(this.obj)) {
         this.typeOf = 'dom';
@@ -272,6 +279,7 @@ class ConsoleLine {
         this.lineIsArrayList();
       }
       else if (Array.isArray(this.obj)) {
+        this.obj.sort();
         this.typeOf = 'arrList';
         this.lineIsArrayList();
       }
@@ -292,6 +300,19 @@ class ConsoleLine {
       this.typeOf = 'string';
       this.lineIsString();
     }
+    else if (this.isFunction(this.obj)) {
+      // console.log(this.obj);
+      this.typeOf = 'func';
+      this.lineIsFunction();
+    }
+    else if (this.obj === null) {
+      this.typeOf = 'null';
+      this.lineIsNullOrUndefined('null');
+    }
+    else if (this.obj === undefined) {
+      this.typeOf = 'undef';
+      this.lineIsNullOrUndefined('undefined');
+    }
   }
 
   // CHECKS CONTROL
@@ -300,6 +321,9 @@ class ConsoleLine {
   }
   isNodeList(key) {
     return (key instanceof NodeList);
+  }
+  isFunction(key) {
+    return key && {}.toString.call(key) === '[object Function]';
   }
 
 
@@ -472,6 +496,7 @@ class ConsoleLine {
           for (const [key, value] of Object.entries(thisObj.obj)) {
             // OBJ'S CHILD PROTOTYPE
             let lineOfObj = document.createElement('p');
+            lineOfObj.className = 'consoleArrayLineInfoP';
             store.objInfo.appendChild(lineOfObj);
 
             let keyObj = document.createElement('span');
@@ -491,6 +516,7 @@ class ConsoleLine {
 
           // ADD LINE FOR LENGTH
           let lineOfObj = document.createElement('p');
+          lineOfObj.className = 'consoleArrayLineInfoP';
           store.objInfo.appendChild(lineOfObj);
 
           let keyObj = document.createElement('span');
@@ -505,10 +531,13 @@ class ConsoleLine {
           valueObj.className = 'consoleObjLineRightSp insideConsoleObjLine';
           lineOfObj.appendChild(valueObj);
 
-          thisObj.createChildConsoleLine(valueObj, thisObj.obj.length);
+          let l = thisObj.obj.length;
+          thisObj.createChildConsoleLine(valueObj, l);
+
 
           // ADD LINE FOR PROTOTYPE OF OBJECT
           let protLineOfObj = document.createElement('p');
+          protLineOfObj.className = 'consoleArrayLineInfoP';
           store.objInfo.appendChild(protLineOfObj);
 
           let protKeyObj = document.createElement('span');
@@ -523,8 +552,8 @@ class ConsoleLine {
           protValueObj.className = 'consoleObjLineRightSp insideConsoleObjLine';
           protLineOfObj.appendChild(protValueObj);
 
-          console.log(thisObj.obj);
-          thisObj.createChildConsoleLine(protValueObj, thisObj.obj.prototype);
+          // console.log(Object.getPrototypeOf(thisObj.obj));
+          thisObj.createChildConsoleLine(protValueObj, Object.getPrototypeOf(thisObj.obj));
         }
         else {
           store.objInfo.innerHTML = '';
@@ -598,6 +627,7 @@ class ConsoleLine {
           for (const [key, value] of Object.entries(thisObj.obj)) {
             // OBJ'S CHILD PROTOTYPE
             let lineOfObj = document.createElement('p');
+            lineOfObj.className = 'consoleObjLineInfoP';
             store.objInfo.appendChild(lineOfObj);
 
             let keyObj = document.createElement('span');
@@ -628,27 +658,72 @@ class ConsoleLine {
 
   // CONSOLE ACTION TO BOOLEAN
   lineIsBoolean() {
-    this.parentOfObj.innerHTML = this.obj;
+    this.parentOfObj.innerHTML += this.obj;
 
     // STYLING
-    this.parentOfObj.style.color = 'rgb(121, 61, 121)';
+    this.parentOfObj.classList.add('consoleObjLineBoolean');
   }
 
   // CONSOLE ACTION TO NUMBER
   lineIsNumber() {
-    this.parentOfObj.innerHTML = this.obj;
+    this.parentOfObj.innerHTML += this.obj;
 
     // STYLING
-    this.parentOfObj.style.color = 'cyan';
+    this.parentOfObj.classList.add('consoleObjLineNumber');
   }
 
   // CONSOLE ACTION TO STRING
   lineIsString() {
-    this.parentOfObj.innerHTML = "'" + this.obj + "'";
+    this.parentOfObj.innerHTML += "'" + this.obj + "'";
 
     // STYLING
-    this.parentOfObj.style.color = 'rgb(255, 166, 0)';
+    this.parentOfObj.classList.add('consoleObjLineString');
   }
+
+  // CONSOLE LINE ACTION TO FUNCTION
+  lineIsFunction() {
+    let objStr = this.obj.toString();
+
+    // STYLING
+    let main = objStr.substring(0, objStr.indexOf(')'));
+    let sec = objStr.substring(objStr.indexOf(')'), objStr.length);
+
+    let main1, main2 = '';
+    if (main.includes('function ')) {
+      [main1, ...main2] = main.split(' ');
+      main1 = 'f  ';
+    }
+    else {
+      main1 = ' ';
+      main2 = main;
+    }
+
+    this.parentOfObj.classList.add('consoleObjLineFunction');
+
+    let spanF = document.createElement('span');
+    spanF.className = 'consoleObjLineFunctionMain';
+    spanF.innerHTML = main1;
+    this.parentOfObj.appendChild(spanF);
+
+    let spanC = document.createElement('p');
+    spanC.className = 'consoleObjLineFunctionSecondary';
+    spanC.innerHTML = main2 + ' ' + sec;
+    this.parentOfObj.appendChild(spanC);
+  }
+
+  // CONSOLE ACTION TO NULL
+  lineIsNullOrUndefined(msg) {
+    this.parentOfObj.innerHTML += msg;
+
+    // STYLING
+    this.parentOfObj.classList.add('consoleObjLineNull');
+  }
+
+  // ADD NUM AND FILE LOC OF LINE, IF IS THE FIRST
+  fileLocAndLineToShowIfNeeded() {
+    this.parentOfObj.innerHTML = `<span class='consoleLineNumAndFileLoc'>${this.fileLoc}:${this.lineNum}</span>`;
+  }
+
 
 
 
@@ -659,8 +734,12 @@ class ConsoleLine {
   }
 
   createChildConsoleLine(currObjELmnt, objsChild) {
+    // CHILDREN DON'T NEED FILE LOC AND LINE NUMBER
+    let child = { message: objsChild, file: null, line: null }
+
+    // SEND TO CHILD OF THIS OBJ IN CONSOLE
     let newthisIdElmtns = this.increaseThisIdElmtnsSecCopy();
-    const childObj = new ConsoleLine(currObjELmnt, objsChild, newthisIdElmtns, this.consoleObj);
+    const childObj = new ConsoleLine(currObjELmnt, child, newthisIdElmtns, this.consoleObj);
     childObj.start();
   }
 }

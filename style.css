@@ -280,7 +280,10 @@ body {
 
 .intiliazedLineOfConsole {
   width: 100%;
-  text-align: center;
+  color: white;
+  text-align: var(--consoleAlign);
+  word-break: break-all;
+  margin: 0;
 }
 .newConsoleLine {
   display: flex;
@@ -292,10 +295,26 @@ body {
   margin: 0.2em 0;
 }
 .newConsoleLine:last-of-type {
-  background: rgb(0, 0, 0, 0.4);
+  display: block;
 }
+#lastLineInConsole hr {
+  margin: 0.4rem 0 1rem 0;
+}
+
+.lastLineInConsole {
+  display: flex;
+  background: rgb(0, 0, 0, 0.4) !important;
+  flex-direction: var(--flexDirect);
+  justify-content: var(--consoleAlign);
+  background: transparent;
+  border-radius: 0.2em;
+  padding: 0.4rem 0.6rem;
+  margin: 0.2em 0;
+}
+
 .consoleLineContent {
   display: flex;
+  flex-direction: column;
   justify-content: var(--consoleAlign);
   flex: 1;
   text-align: var(--consoleAlign);
@@ -303,19 +322,29 @@ body {
   padding: 0 1rem;
   margin: 1px 0 0 0;
 }
+
+/* CONSOLE MESSAGE FILE LOC AND LINE STYLING */
+.consoleLineNumAndFileLoc {
+  color: grey;
+  font-size: 0.9rem;
+  font-style: italic;
+  text-align: var(--consoleAlign);
+  text-decoration: underline;
+  white-space: pre;
+  padding: 0 0.4rem 0 0.5rem;
+  margin-bottom: 10px;
+}
+
 .newConsoleLinePar {
   color: white;
-}
-.newConsoleLine p {
-  color: white;
-  text-align: var(--consoleAlign);
-  word-break: break-all;
-  margin: 1px 0 0 0;
 }
 #consolePointer {
   color: rgb(255, 166, 0);
   font-size: 1rem;
   font-weight: 900;
+}
+#consolePointerPar {
+  display: block;
 }
 .consoleCountPointer {
   color: rgb(194, 157, 132);
@@ -327,6 +356,7 @@ body {
 
 .consoleObjLine {
   display: flex;
+  flex: 1;
   flex-direction: column;
   max-width: 100%;
   padding: 0 0;
@@ -373,8 +403,10 @@ body {
 
 .consoleObjBtnP {
   flex: none;
+  color: white;
   font-size: 1.2em;
-  padding-left: 4px !important;
+  padding-left: 4px;
+  margin: 0;
 }
 .consoleObjBtn:hover .consoleObjBtnP {
   color: darkgray;
@@ -404,12 +436,13 @@ body {
   box-sizing: border-box;
   margin-left: 2px;
 }
-.consoleObjLineInfo p {
+.consoleObjLineInfoP {
   display: flex;
   flex-direction: row;
   align-items: baseline;
   align-self: left;
   padding: 0;
+  margin: 5px 0 0 0;
 }
 .consoleObjLineLeftSp {
   color: lightblue;
@@ -453,33 +486,106 @@ body {
 .consoleDomHoverMouseOverflowForce {
 }
 
-
 .consoleLineArrayParenthesis {
   color: white;
   font-size: 0.8rem;
   padding-left: 4px;
   margin-top: 2px;
 }
+.consoleArrayLineInfoP {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  align-self: left;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.consoleObjLineBoolean {
+  color: rgb(0, 145, 145);
+}
+
+.consoleObjLineNumber {
+  color: cyan;
+}
+
+.consoleObjLineString {
+  color: rgb(255, 166, 0);
+}
+
+.consoleObjLineFunction {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8rem;
+}
+.consoleObjLineFunctionMain {
+  color: rgb(184, 119, 0);
+  font-weight: bold;
+  font-style: italic;
+  text-align: left !important;
+  white-space: pre;
+  border-top: 2px solid transparent;
+  padding: 2px 0;
+}
+.consoleObjLineFunctionSecondary {
+  background: rgb(0, 0, 0, 0);
+  color: rgba(255, 255, 255, 0.75);
+  font-style: italic;
+  text-align: left;
+  white-space: pre;
+  letter-spacing: 1.5px;
+  border-radius: 0.3em;
+  border-top: 2px solid rgb(66, 44, 2);
+  border-bottom: 2px solid rgb(114, 75, 3);
+  padding: 2px;
+  margin: 0;
+}
+
+.consoleObjLineNull {
+  color: darkgray;
+  font-style: italic;
+}
 /**/
 
-/* ERROR MESSAGE LINE STYLING */
-.newConsoleLineError {
+/* ERROR MESSAGE FILE LOC AND LINE STYLING */
+.newConsoleLineWrapError {
+  justify-content: left;
   background: rgb(41, 0, 0);
+  text-align: var(--consoleAlign);
+  padding: 0.4rem 0;
+  margin: 1px 0 0 0;
+}
+.newConsoleLineError {
+  display: flex;
+  flex-direction: row-reverse;
+  flex: 1;
   color: rgb(255, 128, 111);
+  text-align: right;
+  word-break: break-all;
+  padding: 0;
+  margin: 1px 0 0 0;
+}
+
+.errorConsoleMainAndDestinLine {
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 0 0.4rem 0 1.2rem;
+  margin-bottom: 10px;
 }
 .errorMainConsoleDestinLine {
   color: white;
-  font-style: italic;
   animation: ColorErrorConsole 0.3s infinite alternate-reverse;
 }
 .errorConsoleDestinLine {
   text-decoration: underline;
+  white-space: pre;
 }
+
 .errorConsolePar {
-  display: block;
-  width: 100%;
+  flex: 1;
   text-align: var(--consoleAlign) !important;
-  margin: 0 !important;
+  margin: 0 1.2rem;
 }
 /**/
 

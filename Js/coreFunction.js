@@ -40,28 +40,77 @@ function main() {
    // localStorage.removeItem('overallConsoleStatus');
    const consoleStatus = JSON.parse(localStorage.getItem('overallConsoleStatus'));
 
+   // GET TRACE AS STRING SO I CAN SHOW THE LINE OF MESSAGE ON MY CONSOLE
+   let getStackTraceImportant = function () {
+      var obj = {};
+      Error.captureStackTrace(obj, getStackTraceImportant);
+
+      let urlAndLine = obj.stack;
+
+      // FIRST URL FROM CONSOLE.LOG OVERRIDEN CUSTOM FUNCTION
+      let firstUrl = urlAndLine.substring(urlAndLine.indexOf('(') + 1, urlAndLine.indexOf(')'));
+      urlAndLine = urlAndLine.replace(urlAndLine.substring(0, urlAndLine.indexOf(')') + 1), ' ');
+
+      // IMPORTANT URL TO SHOW WHERE MESSAGE CAME FROM, ON CONSOLE
+      let secondUrl = urlAndLine.substring(urlAndLine.indexOf('(') + 1, urlAndLine.indexOf(')'));
+      urlAndLine = urlAndLine.replace(urlAndLine.substring(0, urlAndLine.indexOf(')') + 1), ' ');
+
+      // SPLIT URL AND GET FILE LOCATION AS WELL AS LINE NUMBER
+      let urlEnd = secondUrl.substring(secondUrl.lastIndexOf('/') + 1, secondUrl.length);
+      let urlImprtEnd = urlEnd.substring(0, urlEnd.lastIndexOf(':'));
+      let file = urlImprtEnd.substring(0, urlImprtEnd.lastIndexOf(':'));
+      let line = urlImprtEnd.substring(urlImprtEnd.lastIndexOf(':') + 1, urlImprtEnd.length);
+
+      return { file, line };
+   };
+
    // CHANGE CONSOLE FUNCTION
-   // console.log = function (message) {
-   //    consoleObj.AddNewLineToConsole('msg', message);
-   // }
+   console.log = function (message) {
+      let urlLine = getStackTraceImportant();
+      const msgAndInfo = { message, file: urlLine.file, line: urlLine.line };
+      consoleObj.AddNewLineToConsole('msg', msgAndInfo);
+   }
 
-   consoleObj.AddNewLineToConsole('msg', menuObj);
-   console.log(menuObj);
+   // consoleObj.AddNewLineToConsole('msg', menuObj);
 
+   let c = function () {
+      let x = 0;
+      x++;
+   }
+   // consoleObj.AddNewLineToConsole('msg', c);
+   let c2 = () => {
+      let x = 0;
+      x++;
+      x = (x + 1);
+   }
+   // consoleObj.AddNewLineToConsole('msg', c2);
+
+   function CThree() {
+      let x = 0;
+      x++;
+      x = (x + 1);
+   }
+   let c3 = CThree;
+   // consoleObj.AddNewLineToConsole('msg', c3);
+
+   let h = {
+      hello: menuObj,
+      bye: [0, 0, 0, 0],
+   }
    let now = {
       no1: 'string',
       no2: 1,
       no3: true,
       no4: null,
-      menuL: menuObj,
-      dom: document.getElementById('consoleContent')
+      menuL: h,
+      dom: document.getElementById('consoleContent'),
+      c,
+      c2,
+      c44: c2,
+      c3
    }
-   consoleObj.AddNewLineToConsole('msg', now);
+   consoleObj.AddNewLineToConsole('msg', { message: now, file: 'oopp.js', line: '122' });
    console.log(now);
-   consoleObj.AddNewLineToConsole('msg', 'now');
-   console.log('now');
-   consoleObj.AddNewLineToConsole('msg', 'fejfhej');
-   consoleObj.AddNewLineToConsole('msg', document.getElementById('THREEJScanvas'));
 
    window.onerror = function (error, url, line) {
       let errData = { error: error, url: url, line: line };
@@ -192,6 +241,44 @@ function main() {
 
          if (e.key.toLowerCase() === 'x' && specialKey) {
             menuBtn.click();
+            let c = function () {
+               let x = 0;
+               x++;
+            }
+            // consoleObj.AddNewLineToConsole('msg', c);
+            let c2 = () => {
+               let x = 0;
+               x++;
+               x = (x + 1);
+            }
+            // consoleObj.AddNewLineToConsole('msg', c2);
+
+            function CThree() {
+               let x = 0;
+               x++;
+               x = (x + 1);
+            }
+            let c3 = CThree;
+            // consoleObj.AddNewLineToConsole('msg', c3);
+
+            let h = {
+               hello: menuObj,
+               bye: [0, 0, 0, 0],
+            }
+            let now = {
+               no1: 'string',
+               no2: 1,
+               no3: true,
+               no4: null,
+               menuL: h,
+               dom: document.getElementById('consoleContent'),
+               c,
+               c2,
+               c44: c2,
+               c3
+            }
+            // consoleObj.AddNewLineToConsole('msg', { message: now, file: 'oopp.js', line: '122' });
+            console.log(now);
             e.preventDefault();
          }
 
@@ -216,3 +303,5 @@ function main() {
       });
    }
 }
+
+fjrfhjflefjkejekjfkejkfjekje
