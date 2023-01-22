@@ -10,11 +10,13 @@
       <link rel="stylesheet" href="style.css">
 
       <!-- ADD JQUERY -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
       <!-- ADD TRHEEJS -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.js"></script>
       <!-- ADD DAT.GUI -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+
+      <script type="text/javascript" src="https://zembi.github.io/CustomConsoleChromeWeb/docs/Console.js"></script>
 
       <title>My first
             three.js app</title>
@@ -27,30 +29,10 @@
                         <h2>Menu</h2>
                         <button class='closedCoreMenuBtn'></button>
                   </div>
-                  <div class='closedCoreMenuContent fnfejfhj' id='menuContent'></div>
+                  <div class='closedCoreMenuContent' id='menuContent'></div>
             </div>
 
-            <div class='closedCoreConsole' id='console' title='Shift + C'>
-                  <div id='consoleTitle'>
-                        <button class='closedCoreConsoleBtn consoleImportantFocus'>
-                              <h2>Console</h2>
-                        </button>
-                  </div>
-                  <div class='closedCoreConsoleContent' id='consoleContent'></div>
-                  <div id='consoleBtns'>
-                        <button class='imprtntConsoleBtn' id='changeConsoleAlignBtn'></button>
-                        <button class='imprtntConsoleBtn' id='clearConsoleBtn'>Clear</button>
-                        <select class='imprtntConsoleBtn' id="sizesOfCoreConsoleSlct">
-                              <option value="calc(100% - 32px)">100%</option>
-                              <option value="65%">65%</option>
-                              <option value="50%">50%</option>
-                              <option value="35%">35%</option>
-                              <option value="25%">25%</option>
-                        </select>
-                  </div>
-
-                  <div id='openObject'></div>
-            </div>
+            <div id='console'></div>
 
             <div id='THREEJScanvas'></div>
       </div>
