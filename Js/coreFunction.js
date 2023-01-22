@@ -28,8 +28,8 @@ function main() {
    const menuObj = new Menu(menu, menuBtn, menuContent);
 
    // MENU VARIABLES
-   const consoleEl = document.getElementById('console');
-   const consoleObj = new Console(consoleEl);
+   const consoleElmnt = document.getElementById('consoleIn');
+   const consoleObj = new Console(consoleElmnt);
    consoleObj.start();
 
    InitializeCoreFunctions();
