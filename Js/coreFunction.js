@@ -28,9 +28,9 @@ function main() {
    const menuObj = new Menu(menu, menuBtn, menuContent);
 
    // MENU VARIABLES
-   const consoleElmnt = document.getElementById('consoleIn');
-   const consoleObj = new Console(consoleElmnt);
-   consoleObj.start();
+   // const consoleElmnt = document.getElementById('consoleIn');
+   // const consoleObj = new Console(consoleElmnt);
+   // consoleObj.start();
 
    InitializeCoreFunctions();
 
