@@ -40,22 +40,23 @@ export default class MenuItem {
    }
 
    LoadFileButtonEvent(i) {
-      let scriptToLoad = document.getElementById('scriptToLoad');
-      let src = this.headerSrc + this.itemSrc[i];
+      document.getElementById('iframeContent').src = this.itemSrc[i];
+      //    let scriptToLoad = document.getElementById('scriptToLoad');
+      //    let src = this.headerSrc + this.itemSrc[i];
 
-      var httpRequest = new XMLHttpRequest();
-      httpRequest.open('HEAD', src, false);
-      httpRequest.onload = (e) => {
-         if (httpRequest.readyState === 4) {
-            if (httpRequest.status === 200) {
-               this.ReloadChosenFile(src);
-            }
-            else {
+      //    var httpRequest = new XMLHttpRequest();
+      //    httpRequest.open('HEAD', src, false);
+      //    httpRequest.onload = (e) => {
+      //       if (httpRequest.readyState === 4) {
+      //          if (httpRequest.status === 200) {
+      //             this.ReloadChosenFile(src);
+      //          }
+      //          else {
 
-            }
-         }
-      }
-      httpRequest.send(null);
+      //          }
+      //       }
+      //    }
+      //    httpRequest.send(null);
    }
 
    ReloadChosenFile(src) {

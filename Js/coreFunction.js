@@ -64,8 +64,8 @@ function main() {
       // MENU 1
       let menuItem1 = new MenuItem(menuObj);
       menuItem1.AddHeadMenuItem('FirstProjects', '../Js/FirstProjects/');
-      menuItem1.AddElemntsToMenuItem('FirstProj', 'FirstProj.js');
-      menuItem1.AddElemntsToMenuItem('SecondProj', 'html.js');
+      menuItem1.AddElemntsToMenuItem('FirstProj', 'https://jannis34.eu/');
+      menuItem1.AddElemntsToMenuItem('SecondProj', 'https://vfzempilas.eu/Home/home.html');
       menuObj.AddMenuItemToMenu(menuItem1);
 
       menuObj.SetAllHeadBtns(menuContent.querySelectorAll('button'));
